@@ -1,0 +1,1979 @@
+{
+	"info": {
+		"_postman_id": "68c3efb8-9729-41a4-8b52-4e9ddac07282",
+		"name": "Demo Method",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/745d5885-42d4-427f-9740-17ba824966cb/collection/16137040-68c3efb8-9729-41a4-8b52-4e9ddac07282?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "How can the data returned from this API be utilized for the subsequent API?",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the 'token' from the JSON response and store it in a variable named 'token'.\r",
+									"let token = pm.response.json().token;\r",
+									"// Set the extracted 'token' value as an environment variable named 'token'.\r",
+									"pm.environment.set(\"token\", token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "apitestingwithme@gmail.com"
+								},
+								{
+									"key": "Password",
+									"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get doc",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{token}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "How does the .shift() method work",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let testData = [\r",
+									"    {\r",
+									"        \"TestcaseID\": \"1\",\r",
+									"        \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"        \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": \"2\",\r",
+									"        \"EmailAddress\": \"apitestingwithme@gmail.com_\",\r",
+									"        \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": \"3\",\r",
+									"        \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"        \"Password\": \"apitesting123\"\r",
+									"    }\r",
+									"];\r",
+									"\r",
+									"// TestData before using the .shift() method\r",
+									"console.log(\"This is the array concluding all test data sets before using the .shift() method\");\r",
+									"console.log(testData);\r",
+									"\r",
+									"// Use the .shift() method to retrieve the first data test set\r",
+									"var firstTestDataSet = testData.shift();\r",
+									"\r",
+									"// This is the first test data set retrieved\r",
+									"console.log(\"This is the first test data set retrieved\");\r",
+									"console.log(firstTestDataSet);\r",
+									"\r",
+									"// This is the test data array after retrieving the first test data set\r",
+									"console.log(\"This is the test data array after retrieving the first test data set\");\r",
+									"console.log(testData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/Login",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "apitestingwithme@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "Password",
+									"value": "12a1bc88fb7d9b5e1da6604570ec2f36",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "How to trigger the next API call after a specific period of time",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the 'token' from the response body and store it in the environment for the execution of the next API call\r",
+									"let dataResponse = pm.response.json()\r",
+									"let token = dataResponse.token\r",
+									"pm.environment.set(\"token\",token)\r",
+									"\r",
+									"// Write an assertion to verify the response body\r",
+									"pm.test(\"Login is success. Token = \" + token, function () {\r",
+									"    pm.expect(dataResponse.status).to.eql(\"OK\")\r",
+									"});\r",
+									"\r",
+									"//Set a timeout to execute the API Get Doc after 31 minutes\r",
+									"setTimeout(() => {\r",
+									"    // Code to be executed after the delay\r",
+									"    postman.setNextRequest(\"Get Doc\")\r",
+									"}, 15*1000); // delay in milliseconds. 1000 = 1 second"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "apitestingwithme@gmail.com"
+								},
+								{
+									"key": "Password",
+									"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doc",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract response body\r",
+									"let dataResponse = pm.response.json()\r",
+									"// Write an assertion to verify the response body\r",
+									"pm.test(\"Get Doc successfully. Status = \" + dataResponse.status, function () {\r",
+									"    pm.expect(dataResponse.status).to.eql(\"OK\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{token}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "How does the skipTest work",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 2. Get data stored in the Environment\r",
+									"// Get test data sets from environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get current test data for this interaction from environment\r",
+									"let currentTestData = JSON.parse(pm.environment.get(\"currentTestData\"))\r",
+									"\r",
+									"// 3. Write assertion\r",
+									"// 3.1 Verify http status code\r",
+									"// This is assertion for both 2 test cases\r",
+									"pm.test(\"TC\"+currentTestData.TestcaseID+\" : Verify http status code is \"+currentTestData.httpStatusCode, function () {\r",
+									"    pm.expect(pm.response.code).to.eq(currentTestData.httpStatusCode);\r",
+									"});\r",
+									"\r",
+									"// 3.2 Verify Response Body\r",
+									"// Only when the API returns an HTTP status code of 200, the response parameters 'status' and 'status_desc' will be included in the body. \r",
+									"// In all other cases where the HTTP status code differs, these parameters will not be returned. \r",
+									"// Therefore, we use pm.test.skip to skip a specified assertion within a test script.\r",
+									"let skipTest = currentTestData.httpStatusCode;\r",
+									"if (skipTest !== 200) {\r",
+									"    // httpStatusCode !== 200 -> skip Asssertion verifying Response Body\r",
+									"    pm.test.skip(\"Test Assertion verifying Respone Body is skipped because http status code differs 200\");\r",
+									"} else {\r",
+									"    // httpStatusCode == 200 -> run Asssertion verifying Response Body\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status = \" + currentTestData.statusResField, function () {\r",
+									"        pm.expect(pm.response.json().status).to.eql(currentTestData.statusResField);\r",
+									"    });\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status Description = \" + currentTestData.status_descResField, function () {\r",
+									"        pm.expect(pm.response.json().status_desc).to.eql(currentTestData.status_descResField);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// 4. Check if there is more test data to process\r",
+									"if (testData.length > 0 ) {\r",
+									"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else {\r",
+									"    // If already, finish test.\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1. Prepare test data sets\r",
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\") {\r",
+									"    let firstLogin = \"This is not the first login\"\r",
+									"    // Set up test data as an array of objects. We perform API Login with using 2 different test data sets.\r",
+									"    let testData = [\r",
+									"    {\r",
+									"        \"TestcaseID\": 1,\r",
+									"        \"TestcaseName\": \"Verify login failure with a missing EmailAddress parameter.\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"\",\r",
+									"        \"EmailAddressValue\": \"\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 2,\r",
+									"        \"TestcaseName\": \"Verify login failure with a different HTTP method (not POST).\",\r",
+									"        \"METHOD\": \"GET\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"httpStatusCode\": 405,\r",
+									"        \"httpStatusCodeName\": \"Method Not Allowed\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    },\r",
+									"]\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", firstLogin);\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"}\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get the first test data set\r",
+									"let currentTestData = testData.shift()\r",
+									"// Initialize environment variables for the current iteration\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData))\r",
+									"pm.environment.set(\"currentTestData\", JSON.stringify(currentTestData))\r",
+									"pm.environment.set(\"currentEmailAddressKey\", currentTestData.EmailAddressKey)\r",
+									"pm.environment.set(\"currentEmailAddressValue\", currentTestData.EmailAddressValue)\r",
+									"pm.environment.set(\"CURRENTMETHOD\", currentTestData.METHOD)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "{{CURRENTMETHOD}}",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/Login",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "{{currentEmailAddressKey}}",
+									"value": "{{currentEmailAddressValue}}",
+									"disabled": true
+								},
+								{
+									"key": "PasswordKey",
+									"value": "12a1bc88fb7d9b5e1da6604570ec2f36",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "How to call the next API",
+			"item": [
+				{
+					"name": "How to call the next API_ Test scenario 2",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json();\r",
+											"let status = dataResponse.status;\r",
+											"let token = dataResponse.token;\r",
+											"pm.environment.set(\"token\",token)\r",
+											"pm.test(\"Verify login success. Status = \" + status + \". Token = \" + token, function () {\r",
+											"    pm.expect(pm.response.text()).include(token);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=apitesting123",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Login"
+									],
+									"query": [
+										{
+											"key": "EmailAddress",
+											"value": "apitestingwithme@gmail.com"
+										},
+										{
+											"key": "Password",
+											"value": "apitesting123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get doc",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify get document success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"GetDocumentDetail"
+									],
+									"query": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}"
+										},
+										{
+											"key": "DocumentID",
+											"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify Logout success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(ResStatus).to.include(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Logout",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Logout"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "If the API Login fails, execute both the API Get Document and API Logout calls.\n\n→ No use syntax skip test"
+				},
+				{
+					"name": "How to call the next API_ Test scenario 1",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json();\r",
+											"let status = dataResponse.status;\r",
+											"let token = dataResponse.token;\r",
+											"pm.environment.set(\"token\",token)\r",
+											"pm.test(\"Verify login success. Status = \" + status + \". Token = \" + token, function () {\r",
+											"    pm.expect(pm.response.text()).include(token);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Login"
+									],
+									"query": [
+										{
+											"key": "EmailAddress",
+											"value": "apitestingwithme@gmail.com"
+										},
+										{
+											"key": "Password",
+											"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get doc",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify get document success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"GetDocumentDetail"
+									],
+									"query": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}"
+										},
+										{
+											"key": "DocumentID",
+											"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify Logout success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(ResStatus).to.include(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Logout",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Logout"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "If the API Login is successful, execute both the API Get Document and API Logout calls.\n\n→ No use syntax skip test"
+				},
+				{
+					"name": "How to call the next API_Test Scenario 4",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Get data respone\r",
+											"let dataResponse = pm.response.json();\r",
+											"let status = dataResponse.status;\r",
+											"\r",
+											"// Check if the 'status' is equal to \"OK\", Login success -> Get 'token' and set executing 'Logout' as the next request, skip executing \"Get Doc\"\r",
+											"// Check if the 'status' is not equal to \"OK\", Login fail -> Show error message and don't execute any request (Skip both Get Doc and Logout)\r",
+											"\r",
+											"if (status === \"OK\") {\r",
+											"    let token = dataResponse.token;\r",
+											"    pm.environment.set(\"token\", token);\r",
+											"    pm.test(\"Verify login success. Status = \" + status + \". Token = \" + token, function () {\r",
+											"        pm.expect(pm.response.text()).include(token);\r",
+											"    });\r",
+											"    // Because status === \"OK\", send API Login as next request\r",
+											"    postman.setNextRequest(\"Logout\")\r",
+											"} else {\r",
+											"    let status_desc = dataResponse.status_desc;\r",
+											"    pm.test(\"Verify login fail\", function () {\r",
+											"        pm.expect.fail(\"Status = \" + status + \". Status Description = \" + status_desc);\r",
+											"    });\r",
+											"    // Because status !== \"OK\", stop test.\r",
+											"    postman.setNextRequest(null)\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=apitesting123",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Login"
+									],
+									"query": [
+										{
+											"key": "EmailAddress",
+											"value": "apitestingwithme@gmail.com"
+										},
+										{
+											"key": "Password",
+											"value": "apitesting123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get doc",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify get document success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"GetDocumentDetail"
+									],
+									"query": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}"
+										},
+										{
+											"key": "DocumentID",
+											"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify Logout success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(ResStatus).to.include(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Logout",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Logout"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "**Test Scenario 4**: If the API Login fails, do not execute the API Get Document and API Logout calls."
+				},
+				{
+					"name": "How to call the next API_Test Scenario 3",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Get data respone\r",
+											"let dataResponse = pm.response.json();\r",
+											"let status = dataResponse.status;\r",
+											"\r",
+											"// Check if the 'status' is equal to \"OK\", Login success -> Get 'token' and set executing 'Logout' as the next request, skip executing \"Get Doc\"\r",
+											"// Check if the 'status' is not equal to \"OK\", Login fail -> Show error message and don't execute any request (Skip both Get Doc and Logout)\r",
+											"\r",
+											"if (status === \"OK\") {\r",
+											"    let token = dataResponse.token;\r",
+											"    pm.environment.set(\"token\", token);\r",
+											"    pm.test(\"Verify login success. Status = \" + status + \". Token = \" + token, function () {\r",
+											"        pm.expect(pm.response.text()).include(token);\r",
+											"    });\r",
+											"    // Because status === \"OK\", send API Login as next request\r",
+											"    postman.setNextRequest(\"Logout\")\r",
+											"} else {\r",
+											"    let status_desc = dataResponse.status_desc;\r",
+											"    pm.test(\"Verify login fail\", function () {\r",
+											"        pm.expect.fail(\"Status = \" + status + \". Status Description = \" + status_desc);\r",
+											"    });\r",
+											"    // Because status !== \"OK\", stop test.\r",
+											"    postman.setNextRequest(null)\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Login"
+									],
+									"query": [
+										{
+											"key": "EmailAddress",
+											"value": "apitestingwithme@gmail.com"
+										},
+										{
+											"key": "Password",
+											"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get doc",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify get document success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"detail\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"GetDocumentDetail"
+									],
+									"query": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}"
+										},
+										{
+											"key": "DocumentID",
+											"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let dataResponse = pm.response.json()\r",
+											"let ResStatus = dataResponse.status\r",
+											"pm.test(\"Verify Logout success. Status = \" + ResStatus, function () {\r",
+											"    pm.expect(ResStatus).to.include(\"OK\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded____________",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "SessionID",
+											"value": "{{token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://www.hogodoc.com/HoGo/api/v1/Logout",
+									"protocol": "https",
+									"host": [
+										"www",
+										"hogodoc",
+										"com"
+									],
+									"path": [
+										"HoGo",
+										"api",
+										"v1",
+										"Logout"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "**Test Scenario 3**: If the API Login is successful, only execute the API Logout call."
+				}
+			]
+		},
+		{
+			"name": "How to clear variables",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extract the token from the response\r",
+							"let dataResponse = pm.response.json() \r",
+							"let token = dataResponse.token\r",
+							"// Set the token as a variable in the environment to call the other request.\r",
+							"pm.environment.set(\"token\",token)\r",
+							"\r",
+							"// Write test script test check login success\r",
+							"pm.test(\"Verify login success. Token = \"+token, function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+							"});\r",
+							"\r",
+							"// Clear variables in the environment after the test has been completed.\r",
+							"// In the environment, there are variables such as 'url', 'token', 'TestcaseName', 'EmailAddress', 'Password'.\r",
+							"// 'url' and 'token' are variables that may need to be retained for the next API.\r",
+							"// 'TestcaseName', 'EmailAddress', 'Password' are variables that need to be deleted.\r",
+							"\r",
+							"\r",
+							"// 3. Clear specific variables while retaining common variables like the 'url' and the 'token' variable.\r",
+							"// We may not know the exact number of variables generated through API calls, but we must retain common variables like 'url' and 'token'.\r",
+							"\r",
+							"// // Define an array of common variables to be retained\r",
+							"let commonVariables = [\"url\",\"token\"];\r",
+							"// Convert all environment variables to an object for iteration\r",
+							"let environmentVariables = pm.environment.toObject();\r",
+							"// Loop through the environment variables and if that variable doesn't exist in commonVariables, delete it.\r",
+							"for (let variable in environmentVariables) {\r",
+							"    if (!commonVariables.includes(variable)) {\r",
+							"        pm.environment.unset(variable);\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Create test data\r",
+							"let TestcaseName = \"Verify login success with valid account.\"\r",
+							"let EmailAddress = \"apitestingwithme@gmail.com\"\r",
+							"let Password = \"12a1bc88fb7d9b5e1da6604570ec2f36\"\r",
+							"\r",
+							"// Set data test as variable in the environment\r",
+							"pm.environment.set(\"TestcaseName\",TestcaseName)\r",
+							"pm.environment.set(\"EmailAddress\",EmailAddress)\r",
+							"pm.environment.set(\"Password\",Password)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded____________",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/HoGo/api/v1/Login?EmailAddress={{EmailAddress}}&Password={{Password}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"HoGo",
+						"api",
+						"v1",
+						"Login"
+					],
+					"query": [
+						{
+							"key": "EmailAddress",
+							"value": "{{EmailAddress}}"
+						},
+						{
+							"key": "Password",
+							"value": "{{Password}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "How to run test with multiple test cases at the same time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 7. Get variables declared in Pre-request Script Tab from the environment\r",
+							"let TestcaseName = pm.environment.get(\"TestcaseName\")\r",
+							"let currentTestcaseID = pm.environment.get(\"currentTestcaseID\")\r",
+							"let currentTestcaseName = pm.environment.get(\"currentTestcaseName\")\r",
+							"let currentResStatus = pm.environment.get(\"currentResStatus\")\r",
+							"let currentResStatusDecs = pm.environment.get(\"currentResStatusDecs\")\r",
+							"\r",
+							"// 8. Get data response returned after running API\r",
+							"let dataResponse = pm.response.json()\r",
+							"let resStatus = dataResponse.status\r",
+							"let resStatusDesc = dataResponse.status_desc\r",
+							"\r",
+							"// 9. Check login fail\r",
+							"pm.test(\"TC\" + currentTestcaseID + \" : \" +currentTestcaseName + \". Status = \" + resStatus + \" . Error Description = \" + resStatusDesc, function () {\r",
+							"    pm.expect(resStatus).to.eql(currentResStatus);\r",
+							"    pm.expect(resStatusDesc).to.eql(currentResStatusDecs);\r",
+							"});\r",
+							"\r",
+							"// 10. Call API multiple times based on the number of tests that we need to execute.\r",
+							"if(TestcaseName.length > 0){\r",
+							"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+							"    postman.setNextRequest(\"How to run test with multiple test cases at the same time\")\r",
+							"} else {\r",
+							"    // If all test cases have been executed, set the next request to null to end the script run\r",
+							"    postman.setNextRequest(null)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 1. Prepare test data with three test cases:\r",
+							"// ・TC1: Verify fail with invalid EmailAddress\r",
+							"// ・TC2: Verify fail with invalid Password(encoded MD5)\r",
+							"// ・TC3: Verify fail with invalid Password(not encode MD5)\r",
+							"\r",
+							"// Base on 'firstExection', check whether this is the first time calling the API Login \r",
+							"// If this is the first time calling the API Login, we will set up test data.\r",
+							"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+							"let firstExection = pm.environment.get(\"firstExection\")\r",
+							"if (!firstExection || firstExection !== \"This is not the first execution\"){\r",
+							"    let firstExection = \"This is not the first execution\"\r",
+							"\r",
+							"    // 2. Sample test data columns. Convert each test data collumn to array.\r",
+							"    let TestCaseID = [\"1\",\"2\",\"3\"]\r",
+							"    let TestcaseName = [\"Verify fail with invalid EmailAddress\", \"Verify fail with invalid Password(encoded MD5)\", \"Verify fail with invalid Password(not encode MD5)\"]\r",
+							"    let EmailAddress = [\"apitestingwithme1@gmail.com\", \"apitestingwithme@gmail.com\", \"apitestingwithme@gmail.com\"]\r",
+							"    let Password = [\"12a1bc88fb7d9b5e1da6604570ec2f36\", \"12a1bc88fb7d9b5e1da6604570ec2f36_\", \"apitesting123\"]\r",
+							"    let ResStatus = [\"WrongPassword\", \"WrongPassword\", \"WrongPassword\"]\r",
+							"    let ResStatusDecs = [\"Password did not match\", \"Password did not match\", \"Password did not match\"]   \r",
+							"\r",
+							"    // 3. Set the declared test data above as variable in the environment.\r",
+							"    pm.environment.set(\"firstExection\",firstExection)\r",
+							"    pm.environment.set(\"TestCaseID\",TestCaseID)\r",
+							"    pm.environment.set(\"TestcaseName\",TestcaseName)\r",
+							"    pm.environment.set(\"EmailAddress\",EmailAddress)\r",
+							"    pm.environment.set(\"Password\",Password)\r",
+							"    pm.environment.set(\"ResStatus\",ResStatus)\r",
+							"    pm.environment.set(\"ResStatusDecs\",ResStatusDecs)\r",
+							"}\r",
+							"\r",
+							"// 4. Retrieve Test Data from the environment to use in this tab\r",
+							"let TestCaseID = pm.environment.get(\"TestCaseID\")\r",
+							"let TestcaseName = pm.environment.get(\"TestcaseName\")\r",
+							"let EmailAddress = pm.environment.get(\"EmailAddress\")\r",
+							"let Password = pm.environment.get(\"Password\")\r",
+							"let ResStatus = pm.environment.get(\"ResStatus\")\r",
+							"let ResStatusDecs = pm.environment.get(\"ResStatusDecs\")\r",
+							"\r",
+							"// 5. Create environment variables for the current iteration\r",
+							"// The shift() method removes the first element from the array and returns new array\r",
+							"// For example, define TestCaseID = [1,2,3]\r",
+							"// After API Login execute the first time, currentTestcaseID = 1 and TestCaseID = [2,3]\r",
+							"// After API Login execute the second time, currentTestcaseID = 2 and TestCaseID = [3]\r",
+							"// After API Login execute the last time, currentTestcaseID = 3 and TestCaseID = []\r",
+							"pm.environment.set(\"currentTestcaseID\",TestCaseID.shift())\r",
+							"pm.environment.set(\"currentTestcaseName\",TestcaseName.shift())\r",
+							"pm.environment.set(\"currentEmailAddress\",EmailAddress.shift())\r",
+							"pm.environment.set(\"currentPassword\",Password.shift())\r",
+							"pm.environment.set(\"currentResStatus\",ResStatus.shift())\r",
+							"pm.environment.set(\"currentResStatusDecs\",ResStatusDecs.shift())\r",
+							"\r",
+							"// 6. After retrieving the first value, update the environment with the remaining arrays for the next request\r",
+							"pm.environment.set(\"TestCaseID\",TestCaseID)\r",
+							"pm.environment.set(\"TestcaseName\",TestcaseName)\r",
+							"pm.environment.set(\"EmailAddress\",EmailAddress)\r",
+							"pm.environment.set(\"Password\",Password)\r",
+							"pm.environment.set(\"ResStatus\",ResStatus)\r",
+							"pm.environment.set(\"ResStatusDecs\",ResStatusDecs)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded____________",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress={{currentEmailAddress}}&Password={{currentPassword}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"hogodoc",
+						"com"
+					],
+					"path": [
+						"HoGo",
+						"api",
+						"v1",
+						"Login"
+					],
+					"query": [
+						{
+							"key": "EmailAddress",
+							"value": "{{currentEmailAddress}}"
+						},
+						{
+							"key": "Password",
+							"value": "{{currentPassword}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "How to use If-else Statement to control work flow",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let dataResponse = pm.response.json();\r",
+							"// Check if the 'status' in the JSON response is equal to \"OK\".\r",
+							"if (dataResponse.status === \"OK\") {\r",
+							"    // If the status is \"OK\", extract the 'token' and 'status' from the JSON response.\r",
+							"    let token = dataResponse.token;\r",
+							"    let status = dataResponse.status;\r",
+							"    // Set the extracted 'token' value as an environment variable named 'token'.\r",
+							"    pm.environment.set(\"token\", token);\r",
+							"    // Perform a test to verify the success of the login. Display a message with the token and expect the status to be \"OK\".\r",
+							"    pm.test(\"Verify Login success. Status = \" + status + \". Token = \" + token, function () {\r",
+							"        pm.expect(status).to.eql(\"OK\");\r",
+							"    });\r",
+							"} else {\r",
+							"    // If the status is not \"OK\", extract the 'status' and 'status_desc' from the JSON response.\r",
+							"    let status = dataResponse.status;\r",
+							"    let status_desc = dataResponse.status_desc;\r",
+							"    // Perform a test to verify the failure of the login. \r",
+							"    // Display a message with the status and status description, and expect the status and status description to match specific values.\r",
+							"    pm.test(\"Verify Login fail. Status = \" + status + \". Status Description = \" + status_desc, function () {\r",
+							"        pm.expect(status).to.eql(\"WrongPassword\");\r",
+							"        pm.expect(status_desc).to.eql(\"Password did not match\");\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded____________",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+					"protocol": "https",
+					"host": [
+						"www",
+						"hogodoc",
+						"com"
+					],
+					"path": [
+						"HoGo",
+						"api",
+						"v1",
+						"Login"
+					],
+					"query": [
+						{
+							"key": "EmailAddress",
+							"value": "apitestingwithme@gmail.com"
+						},
+						{
+							"key": "Password",
+							"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login_SET/GET variables from the environment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Get data test from the environment to print them in Message in the Test Results tab\r",
+							"let EmailAddress = pm.environment.get(\"EmailAddress\")\r",
+							"let Password = pm.environment.get(\"Password\")\r",
+							"\r",
+							"// Write test script test check login success\r",
+							"pm.test(\"Verify login success with EmailAddress = \" + EmailAddress + \". Password = \" + Password, function () {\r",
+							"    pm.expect(pm.response.json().status).to.include(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Prepare test data\r",
+							"let EmailAddress = \"apitestingwithme@gmail.com\"\r",
+							"let Password = \"12a1bc88fb7d9b5e1da6604570ec2f36\"\r",
+							"\r",
+							"// Set data test as variable in the environment\r",
+							"pm.environment.set(\"EmailAddress\",EmailAddress)\r",
+							"pm.environment.set(\"Password\",Password)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded____________",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress={{EmailAddress}}&Password={{Password}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"hogodoc",
+						"com"
+					],
+					"path": [
+						"HoGo",
+						"api",
+						"v1",
+						"Login"
+					],
+					"query": [
+						{
+							"key": "EmailAddress",
+							"value": "{{EmailAddress}}"
+						},
+						{
+							"key": "Password",
+							"value": "{{Password}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,1503 @@
+{
+	"info": {
+		"_postman_id": "96b8ea9c-aa61-457d-a76d-32525dfb40f4",
+		"name": "Hogo Login API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/745d5885-42d4-427f-9740-17ba824966cb/collection/16137040-96b8ea9c-aa61-457d-a76d-32525dfb40f4?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "HOGO_Post-Logout Session Expiry Test",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"\r",
+									"// Check whether this is the first time calling the API Login.\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\"){\r",
+									"\t// Set up test data as an array of objects\r",
+									"    let testData  = [\r",
+									"        {\r",
+									"            TestcaseID: \"1\",\r",
+									"            TestcaseName: \"Verify SessionID expire after logout (KeepMeLogin = true)\",\r",
+									"            EmailAddress: \"apitestingwithme@gmail.com\",\r",
+									"            Password: \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            KeepMeLogin: true\r",
+									"        },\r",
+									"        {\r",
+									"            TestcaseID: \"2\",\r",
+									"            TestcaseName: \"Verify SessionID expire after logout (KeepMeLogin = false)\",\r",
+									"            EmailAddress: \"apitestingwithme@gmail.com\",\r",
+									"            Password: \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            KeepMeLogin: false\r",
+									"        }        \r",
+									"    ];\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", \"This is not the first login\");\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"}\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"\r",
+									"// Get the first test data object\r",
+									"// Initialize environment variables for the current iteration\r",
+									"let currentTestData = testData.shift(); \r",
+									"pm.environment.set(\"currentTestcaseID\", currentTestData.TestcaseID);\r",
+									"pm.environment.set(\"currentTestcaseName\", currentTestData.TestcaseName);\r",
+									"pm.environment.set(\"currentEmailAddress\", currentTestData.EmailAddress);\r",
+									"pm.environment.set(\"currentPassword\", currentTestData.Password);\r",
+									"pm.environment.set(\"currentKeepMeLogin\", currentTestData.KeepMeLogin);\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the JSON data from the response\r",
+									"let dataResponse = pm.response.json()\r",
+									"\r",
+									"// Retrieve the current testcase name and ID from the environment\r",
+									"let currentTestcaseName = pm.environment.get(\"currentTestcaseName\")\r",
+									"let currentTestcaseID = pm.environment.get(\"currentTestcaseID\")\r",
+									"\r",
+									"// Define a Postman test script to validate the login success scenario\r",
+									"pm.test(\"TC\"+currentTestcaseID+\": \" +currentTestcaseName + \". Result: Login success\", function () {\r",
+									"\t\t// Check if the response status is \"OK\" indicating successful login\r",
+									"    if (dataResponse.status === \"OK\"){\r",
+									"\t\t// Expect that the response text includes the keyword \"token\"\r",
+									"        pm.expect(pm.response.text()).to.include(\"token\");\r",
+									"\t\t// Set the retrieved token from data respone in the environment for the next request\r",
+									"        pm.environment.set(\"token\",dataResponse.token)\r",
+									"\t\t// Set the next request to \"Get Doc Success_Session maintain\" to demonstrate SessionID still maintained\r",
+									"        postman.setNextRequest(\"Get Doc Success_Session maintain\")\r",
+									"    } else {\r",
+									"\t\t// If login fails, fail the test and provide an error message\r",
+									"        pm.expect.fail(\"Login fail. Error Message: \"+ dataResponse.status);\r",
+									"\t}\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/Login?EmailAddress={{currentEmailAddress}}&Password={{currentPassword}}&KeepMeLogin={{currentKeepMeLogin}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "{{currentEmailAddress}}"
+								},
+								{
+									"key": "Password",
+									"value": "{{currentPassword}}"
+								},
+								{
+									"key": "KeepMeLogin",
+									"value": "{{currentKeepMeLogin}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doc Success_Session maintain",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let dataRespone = pm.response.json()\r",
+									"// Retrieve the token from the environment\r",
+									"let token = pm.environment.get(\"token\")\r",
+									"// Check if the response status is \"OK\"\r",
+									"if (dataRespone.status === \"OK\"){\r",
+									"// Test the scenario of GET document successfully with token retrieved from API Login\r",
+									"    pm.test(\"Verify get doccument success. Token = \"+token, function () {\r",
+									"\t\t\t\t// Expect that the response includes the attribute \"detail\"\r",
+									"        pm.expect(pm.response.text()).to.include(\"detai\");\r",
+									"    });\r",
+									"\t\t// If get doccument success, set the next request to \"Logout\"\r",
+									"    postman.setNextRequest(\"Logout\")\r",
+									"}else{\r",
+									"\t\t// Test the scenario of GET document failed with token retrieved from API Login\r",
+									"    pm.test(\"Verify get doccument fail. Token = \"+token, function () {\r",
+									"\t\t\t\t// Fail the test and provide an error message including the response status\r",
+									"        pm.expect.fail(\"Message error: status = \"+dataRespone.status)\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{token}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let dataRespone = pm.response.json()\r",
+									"// Retrieve the token from the environment\r",
+									"let token = pm.environment.get(\"token\")\r",
+									"// Check if the response status is \"OK\"\r",
+									"if (dataRespone.status === \"OK\"){\r",
+									"\t\t// Test the scenario of successful logout with the provided token\r",
+									"    pm.test(\"Verify logout success. Token = \"+token, function () {\r",
+									"\t\t// Expect that the response status is \"OK\" if logout success\r",
+									"        pm.expect(dataRespone.status).to.eql(\"OK\");\r",
+									"    });\r",
+									"\t\t// Set the next request to \"Get Doc Fail_Session expire\" to demonstrate session expiration\r",
+									"    postman.setNextRequest(\"Get Doc Fail_Session expire\")\r",
+									"}else{\r",
+									"\t\t// Test the scenario of failed logout with the provided token\r",
+									"    pm.test(\"Verify logout fail. Token = \"+token, function () {\r",
+									"\t\t// Fail the test and provide an error message including the status description\r",
+									"        pm.expect.fail(\"Message error: status_desc = \"+dataRespone.status_desc)\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "SessionID",
+									"value": "{{token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/Logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doc Fail_Session expire",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let dataRespone = pm.response.json()\r",
+									"// Retrieve the token from the environment\r",
+									"let token = pm.environment.get(\"token\")\r",
+									"// Test the scenario of failed document due to expired SessionID after log out\r",
+									"pm.test(\"Verify get doc Fail because SessionID was expired after log out. Token = \"+token+ \". Message = \"+dataRespone.status, function () {\r",
+									"    if (dataRespone.status ===\"SessionIdNotFound\"){\r",
+									"\t\t\t\t// Expect that the status description indicates \"User must login\"\r",
+									"        pm.expect(dataRespone.status_desc).to.eql(\"User must login\");\r",
+									"    } else {\r",
+									"\t\t\t\t// Fail the test if the session is maintained after log out\r",
+									"        pm.expect.fail(\"Session maintain after log out: Status = \"+dataRespone.status)\r",
+									"    }\r",
+									"});\r",
+									"// Determine whether this is the end of the iteration\r",
+									"// If TestcaseName.length > 0, continue to the next iteration\r",
+									"// If TestcaseName.length = 0, stop the iteration and clear variables created during the script run\r",
+									"// The environment will retain common variables and clear variables generated during script run\r",
+									"\r",
+									"// Define an array of common variables to be retained\r",
+									"let commonVariables = [\"schema\",\"commonTest\",\"url\"];\r",
+									"// Convert all environment variables to an object for iteration\r",
+									"let environmentVariables = pm.environment.toObject();\r",
+									"\r",
+									"// Check if there are remaining test cases to be executed\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"if(testData.length > 0){\r",
+									"\t\t// If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else {\r",
+									"\t\t// If all test cases have been executed, set the next request to null to end the script run\r",
+									"    postman.setNextRequest(null)\r",
+									"\t\t// Loop through the environment variables and unset (delete) non-common variables\r",
+									"    for (let variable in environmentVariables) {\r",
+									"        if (!commonVariables.includes(variable)) {\r",
+									"            pm.environment.unset(variable);\r",
+									"        }\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{token}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "## A. Spec:\n\nThe API Login receives three request parameters: EmailAddress, Password, and KeepMeLogin. If the login is successful, a token (SessionID) will be generated for other API tasks. When KeepMeLogin is set to false, the SessionID will expire after 30 minutes.\n\n## B. **Test scenarios:**\n\nVerify after running the API Logout successfully, the SessionID must be expired.\n\n## C. Flow:\n\n1. Call API Login → Get Token (SessionID)\n2. Call API GET Document → Successfully get the document using SessionID from Step 1\n3. Call API Logout → SessionID deactive\n4. Call API GET Document → Fail to get the document using SessionID from Step 1 (Because the Session ID has already expired in Step 3)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Hogo_Login_How to verify Login with positive test cases AND Token(SessionID) value",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 2. Verify respone Body\r",
+									"// Extract the JSON data from the response\r",
+									"let dataResponse = pm.response.json();\r",
+									"// Get test data sets from environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get current test data for this interaction from environment\r",
+									"let currentTestData = JSON.parse(pm.environment.get(\"currentTestData\"))\r",
+									"// Get schema\r",
+									"let schema = JSON.parse(pm.environment.get(\"schema\"))\r",
+									"\r",
+									"// Write assertion to check\r",
+									"// Verify http status code và http code name\r",
+									"pm.test(\"TC\"+currentTestData.TestcaseID+\" : Verify http status code is \"+currentTestData.httpStatusCode, function () {\r",
+									"    pm.expect(pm.response.code).to.eq(currentTestData.httpStatusCode);\r",
+									"});\r",
+									"// Verify http code name\r",
+									"pm.test(\"Verify http status code name is \"+ currentTestData.httpStatusCodeName, function () {\r",
+									"    pm.expect(pm.response.reason()).to.eq(currentTestData.httpStatusCodeName)\r",
+									"});\r",
+									"// Verify body\r",
+									"pm.test(currentTestData.TestcaseName + \". Respone Status = \" + dataResponse.status + \". Token = \" + dataResponse.token, function () {\r",
+									"    pm.expect(dataResponse.status).to.eql(currentTestData.statusResField);\r",
+									"});\r",
+									"// Verify schema\r",
+									"pm.test(\"Verify schema\", function () {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"// 3. Prepare data for checking session expiration\r",
+									"// Retrieve Token retured from API\r",
+									"let token = dataResponse.token;\r",
+									"// Retrieve and parse the \"remainSessionArray\", \"expiredSessionArray\" from the environment to an array\r",
+									"let remainSessionArray = JSON.parse(pm.environment.get(\"remainSessionArray\"));\r",
+									"let expiredSessionArray = JSON.parse(pm.environment.get(\"expiredSessionArray\"));\r",
+									"\r",
+									"// Check if the currentTestData's SessionStatus is set to \"remain\"\r",
+									"if (currentTestData.SessionStatus === \"remain\") {\r",
+									"    // Create object for remaining sessions with relevant details\r",
+									"    let remainSessionObj = {\r",
+									"        \"TestcaseID\" : currentTestData.TestcaseID,\r",
+									"        \"GetDocumentStatus\" : currentTestData.getDocumentStatus,\r",
+									"        \"Token\" : token\r",
+									"    }\r",
+									"    // Add the remainSessionObj to the remainSessionArray and set remainSessionArray into the environment\r",
+									"    remainSessionArray.push(remainSessionObj)\r",
+									"    pm.environment.set(\"remainSessionArray\", JSON.stringify(remainSessionArray));\r",
+									"} else { // If not remaining session\r",
+									"    // Create object for expired sessions with relevant details\r",
+									"    let expiredSessionObj = {\r",
+									"        \"TestcaseID\" : currentTestData.TestcaseID,\r",
+									"        \"GetDocumentStatus\" : currentTestData.getDocumentStatus,\r",
+									"        \"Token\" : token\r",
+									"    }\r",
+									"    // Add the expiredSessionObj to the expiredSessionArray and set expiredSessionArray into the environment\r",
+									"    expiredSessionArray.push(expiredSessionObj)\r",
+									"    pm.environment.set(\"expiredSessionArray\", JSON.stringify(expiredSessionArray));\r",
+									"}\r",
+									"// If there is more test data to process\r",
+									"if (testData.length > 0 ) {\r",
+									"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else { // If no more test data\r",
+									"    // Set a timer for 31 minutes before triggering the next request\r",
+									"    setTimeout(() => {\r",
+									"        postman.setNextRequest(\"GetDoc_Verify KeepMeLogin = true\")\r",
+									"    }, 3000); // 31 minutes\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1. Prepare test data sets\r",
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\") {\r",
+									"    let firstLogin = \"This is not the first login\"\r",
+									"    // Set up test data as an array of objects. We perform API Login with using 10 different test data sets.\r",
+									"    let testData = [\r",
+									"        {\r",
+									"            \"TestcaseID\": \"1\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress and Password (encoded MD5)\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": null,\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"2\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin = true\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": true,\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"remain\",\r",
+									"            \"getDocumentStatus\": \"OK\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"3\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin = TRUE\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": \"TRUE\",\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"remain\",\r",
+									"            \"getDocumentStatus\": \"OK\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"4\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin = false\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": false,\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"5\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin = FALSE\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": \"FALSE\",\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"6\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin =  ' '\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": \"\",\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"7\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin =  1\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": 1,\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"8\",\r",
+									"            \"TestcaseName\": \"Login successfully with: valid required EmailAddress, Password (encoded MD5), AND valid optional KeepMeLogin =  abc\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": \"abc\",\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"9\",\r",
+									"            \"TestcaseName\": \"Login successfully with the valid EmailAddress is Uppercase characters\",\r",
+									"            \"EmailAddress\": \"APITESTINGWITHME@GMAIL.COM\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": null,\r",
+									"            \"ExtraValue\": null,\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": \"10\",\r",
+									"            \"TestcaseName\": \"Login successfully with adding more field\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"KeepMeLogin\": null,\r",
+									"            \"ExtraValue\": \"xyz\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"OK\",\r",
+									"            \"SessionStatus\": \"expired\",\r",
+									"            \"getDocumentStatus\": \"SessionIdNotFound\"\r",
+									"        }\r",
+									"    ]\r",
+									"    // Define Schema\r",
+									"    let schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"required\": [\r",
+									"            \"status\",\r",
+									"            \"token\"\r",
+									"        ],\r",
+									"        \"properties\": {\r",
+									"            \"status\": {\r",
+									"                \"type\": \"string\"\r",
+									"            },\r",
+									"            \"token\": {\r",
+									"                \"type\": \"string\"\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", firstLogin);\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"    pm.environment.set(\"schema\", JSON.stringify(schema));\r",
+									"    // Initialize 2 empty arrays to store TOKENs\r",
+									"    pm.environment.set(\"remainSessionArray\", \"[]\");\r",
+									"    pm.environment.set(\"expiredSessionArray\", \"[]\");\r",
+									"}\r",
+									"\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get the first test data set\r",
+									"let currentTestData = testData.shift()\r",
+									"// Initialize environment variables for the current iteration\r",
+									"pm.environment.set(\"currentTestData\", JSON.stringify(currentTestData))\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData))\r",
+									"pm.environment.set(\"currentEmailAddress\", currentTestData.EmailAddress)\r",
+									"pm.environment.set(\"currentPassword\", currentTestData.Password)\r",
+									"pm.environment.set(\"currentKeepMeLogin\", currentTestData.KeepMeLogin)\r",
+									"pm.environment.set(\"currentExtraValue\", currentTestData.ExtraValue)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/Login?EmailAddress={{currentEmailAddress}}&Password={{currentPassword}}&KeepMeLogin={{currentKeepMeLogin}}&abc={{currentExtraValue}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "{{currentEmailAddress}}"
+								},
+								{
+									"key": "Password",
+									"value": "{{currentPassword}}"
+								},
+								{
+									"key": "KeepMeLogin",
+									"value": "{{currentKeepMeLogin}}"
+								},
+								{
+									"key": "abc",
+									"value": "{{currentExtraValue}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetDoc_Verify KeepMeLogin = true",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 5. Write assertion\r",
+									"// Retrieve \"remainSessionArray\",\"currentRemainSessionObj\" from environment\r",
+									"let remainSessionArray = JSON.parse(pm.environment.get(\"remainSessionArray\"))\r",
+									"let currentRemainSessionObj = JSON.parse(pm.environment.get(\"currentRemainSessionObj\"))\r",
+									"\r",
+									"//Verify if Get Document is successful with provided Tokens\r",
+									"pm.test(\"TC\" +currentRemainSessionObj.TestcaseID+ \": Get Document is successful. Status = \" + currentRemainSessionObj.GetDocumentStatus + \". Token = \" + currentRemainSessionObj.Token, function () {\r",
+									"    pm.expect(pm.response.json().status).to.eql(currentRemainSessionObj.GetDocumentStatus);\r",
+									"    pm.expect(pm.response.text()).to.include(\"detail\")\r",
+									"});\r",
+									"\r",
+									"// Check if All tokens have already performed\r",
+									"if (remainSessionArray.length > 0) {\r",
+									"    // If not yet, call API \"GetDoc_Verify KeepMeLogin = true\" again\r",
+									"    postman.setNextRequest(\"GetDoc_Verify KeepMeLogin = true\");\r",
+									"} else {\r",
+									"    // If already, call API \"GetDoc_Verify KeepMeLogin = false\" to verify the Session expired case\r",
+									"    postman.setNextRequest(\"GetDoc_Verify KeepMeLogin = false\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 4. Prepare Testdata (Tokens) for the Session remain case\r",
+									"\r",
+									"// Retrieve and parse the \"remainSessionArray\" from the Postman environment to an array\r",
+									"let remainSessionArray = JSON.parse(pm.environment.get(\"remainSessionArray\"))\r",
+									"// Get the first element from the remainSessionArray and store it in currentRemainSessionObj\r",
+									"let currentRemainSessionObj = remainSessionArray.shift()\r",
+									"\r",
+									"// Set test data into the environment\r",
+									"pm.environment.set(\"currentToken\",currentRemainSessionObj.Token)\r",
+									"pm.environment.set(\"currentRemainSessionObj\",JSON.stringify(currentRemainSessionObj))\r",
+									"pm.environment.set(\"remainSessionArray\",JSON.stringify(remainSessionArray))\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/GetDocumentDetail?SessionID={{currentToken}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{currentToken}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetDoc_Verify KeepMeLogin = false",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 7. Write assertion\r",
+									"// Retrieve \"expiredSessionArray\",\"currentExpiredSessionObj\" from environment\r",
+									"let expiredSessionArray = JSON.parse(pm.environment.get(\"expiredSessionArray\"))\r",
+									"let currentExpiredSessionObj = JSON.parse(pm.environment.get(\"currentExpiredSessionObj\"))\r",
+									"\r",
+									"//Verify if Get Document fails with provided Tokens\r",
+									"pm.test(\"TC\" +currentExpiredSessionObj.TestcaseID+ \": Get Document fails. Status = \" + currentExpiredSessionObj.GetDocumentStatus + \". Token = \" + currentExpiredSessionObj.Token, function () {\r",
+									"    pm.expect(pm.response.json().status).to.eql(currentExpiredSessionObj.GetDocumentStatus);\r",
+									"});\r",
+									"\r",
+									"// 8. Check if All tokens have already performed\r",
+									"if (expiredSessionArray.length > 0) {\r",
+									"    // If not yet, call API \"GetDoc_Verify KeepMeLogin = false\" again\r",
+									"    postman.setNextRequest(\"GetDoc_Verify KeepMeLogin = false\");\r",
+									"} else {\r",
+									"    // If already, finish test.\r",
+									"    postman.setNextRequest(null);\r",
+									"    // \r",
+									"    // 9. Clear variable in the environment\r",
+									"    // Define an array of common variables to be retained\r",
+									"    let commonVariables = [\"url\"];\r",
+									"    // Convert all environment variables to an object for iteration\r",
+									"    let environmentVariables = pm.environment.toObject();\r",
+									"    // Loop through the environment variables and if that variable doesn't exist in commonVariables, delete it.\r",
+									"    for (let variable in environmentVariables) {\r",
+									"        if (!commonVariables.includes(variable)) {\r",
+									"            pm.environment.unset(variable);\r",
+									"        }\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 6. Prepare Testdata (Tokens) for the Session expire case\r",
+									"\r",
+									"// Retrieve and parse the \"expiredSessionArray\" from the Postman environment to an array\r",
+									"let expiredSessionArray = JSON.parse(pm.environment.get(\"expiredSessionArray\"))\r",
+									"// Get the first element from the expiredSessionArray and store it in currentExpiredSessionObj\r",
+									"let currentExpiredSessionObj = expiredSessionArray.shift()\r",
+									"\r",
+									"// Set test data into the environment\r",
+									"pm.environment.set(\"currentToken\",currentExpiredSessionObj.Token)\r",
+									"pm.environment.set(\"currentExpiredSessionObj\",JSON.stringify(currentExpiredSessionObj))\r",
+									"pm.environment.set(\"expiredSessionArray\",JSON.stringify(expiredSessionArray))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/GetDocumentDetail?SessionID={{currentToken}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{currentToken}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "HOGO_Login Fail With Invalid Account",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 2. Verify respone Body\r",
+									"// Extract the JSON data from the response\r",
+									"let dataResponse = pm.response.json();\r",
+									"// Get test data sets from environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get current test data for this interaction from environment\r",
+									"let currentTestData = JSON.parse(pm.environment.get(\"currentTestData\"))\r",
+									"// Get schema\r",
+									"let schema = JSON.parse(pm.environment.get(\"schema\"))\r",
+									"\r",
+									"// Write assertion to check\r",
+									"// Verify http status code và http code name\r",
+									"pm.test(\"TC\"+currentTestData.TestcaseID+\" : Verify http status code is \"+currentTestData.httpStatusCode, function () {\r",
+									"    pm.expect(pm.response.code).to.eq(currentTestData.httpStatusCode);\r",
+									"});\r",
+									"// Verify http code name\r",
+									"pm.test(\"Verify http status code name is \"+ currentTestData.httpStatusCodeName, function () {\r",
+									"    pm.expect(pm.response.reason()).to.eq(currentTestData.httpStatusCodeName)\r",
+									"});\r",
+									"// Verify body\r",
+									"pm.test(currentTestData.TestcaseName + \". Respone Status = \" + dataResponse.status, function () {\r",
+									"    pm.expect(dataResponse.status).to.eql(currentTestData.statusResField);\r",
+									"});\r",
+									"\r",
+									"pm.test(currentTestData.TestcaseName + \". Respone Status Description = \" + dataResponse.status_desc, function () {\r",
+									"    pm.expect(dataResponse.status_desc).to.eql(currentTestData.status_descResField);\r",
+									"});\r",
+									"// Verify schema\r",
+									"pm.test(\"Verify schema\", function () {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"// 3. Check if there is more test data to process\r",
+									"if (testData.length > 0 ) {\r",
+									"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else {\r",
+									"    // If already, finish test.\r",
+									"    postman.setNextRequest(null);\r",
+									"    \r",
+									"    // 4. Clear variable in the environment\r",
+									"    // Define an array of common variables to be retained\r",
+									"    let commonVariables = [\"url\"];\r",
+									"    // Convert all environment variables to an object for iteration\r",
+									"    let environmentVariables = pm.environment.toObject();\r",
+									"    // Loop through the environment variables and if that variable doesn't exist in commonVariables, delete it.\r",
+									"    for (let variable in environmentVariables) {\r",
+									"        if (!commonVariables.includes(variable)) {\r",
+									"            pm.environment.unset(variable);\r",
+									"        }\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1. Prepare test data sets\r",
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\") {\r",
+									"    let firstLogin = \"This is not the first login\"\r",
+									"    // Set up test data as an array of objects. We perform API Login with using 7 different test data sets.\r",
+									"    let testData = [ \r",
+									"        {\r",
+									"            \"TestcaseID\": 1,\r",
+									"            \"TestcaseName\": \"Verify login failed with invalid EmailAddress, valid Password (encoded MD5)\",\r",
+									"            \"EmailAddress\": \"apitestingwithme_@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"WrongPassword\",\r",
+									"            \"status_descResField\": \"Password did not match\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": 2,\r",
+									"            \"TestcaseName\": \"Verify login failed with valid EmailAddress, invalid password (encoded MD5)\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36_\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"WrongPassword\",\r",
+									"            \"status_descResField\": \"Password did not match\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": 3,\r",
+									"            \"TestcaseName\": \"Verify login failed with valid EmailAddress, invalid Password(not encoded MD5)\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"apitesting123\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"WrongPassword\",\r",
+									"            \"status_descResField\": \"Password did not match\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": 4,\r",
+									"            \"TestcaseName\": \"Verify login failed with valid EmailAddress, invalid Password (value before changed pass)\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"3e9688b79d9562b1624ec475db5d2294\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"WrongPassword\",\r",
+									"            \"status_descResField\": \"Password did not match\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": 5,\r",
+									"            \"TestcaseName\": \"Verify login failed with empty EmailAddress, valid Password\",\r",
+									"            \"EmailAddress\": \"\",\r",
+									"            \"Password\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"InputParameterError\",\r",
+									"            \"status_descResField\": \"Required input parameters were not found\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": 6,\r",
+									"            \"TestcaseName\": \"Verify login failed with valid EmailAddress, empty Password\",\r",
+									"            \"EmailAddress\": \"apitestingwithme@gmail.com\",\r",
+									"            \"Password\": \"\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"InputParameterError\",\r",
+									"            \"status_descResField\": \"Required input parameters were not found\"\r",
+									"        },\r",
+									"        {\r",
+									"            \"TestcaseID\": 7,\r",
+									"            \"TestcaseName\": \"Verify login failed with account is not activated\",\r",
+									"            \"EmailAddress\": \"eom1hc@gmail.com\",\r",
+									"            \"Password\": \"3e9688b79d9562b1624ec475db5d2294\",\r",
+									"            \"ExpectedResult\": \"Login failed\",\r",
+									"            \"httpStatusCode\": 200,\r",
+									"            \"httpStatusCodeName\": \"OK\",\r",
+									"            \"statusResField\": \"WrongPassword\",\r",
+									"            \"status_descResField\": \"Password did not match\"\r",
+									"        }\r",
+									"    ]\r",
+									"    // Define Schema\r",
+									"    let schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"required\": [\r",
+									"            \"status\",\r",
+									"            \"status_desc\"\r",
+									"        ],\r",
+									"        \"properties\": {\r",
+									"            \"status\": {\r",
+									"                \"type\": \"string\"\r",
+									"            },\r",
+									"            \"token\": {\r",
+									"                \"type\": \"string\"\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", firstLogin);\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"    pm.environment.set(\"schema\", JSON.stringify(schema));\r",
+									"}\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get the first test data set\r",
+									"let currentTestData = testData.shift()\r",
+									"// Initialize environment variables for the current iteration\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData))\r",
+									"pm.environment.set(\"currentTestData\", JSON.stringify(currentTestData))\r",
+									"pm.environment.set(\"currentEmailAddress\", currentTestData.EmailAddress)\r",
+									"pm.environment.set(\"currentPassword\", currentTestData.Password)\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/HoGo/api/v1/Login?EmailAddress={{currentEmailAddress}}&Password={{currentPassword}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "{{currentEmailAddress}}"
+								},
+								{
+									"key": "Password",
+									"value": "{{currentPassword}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "HOGO_LoginFail(OtherCase)",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 2. Get data stored in the Environment\r",
+									"// Get test data sets from environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get current test data for this interaction from environment\r",
+									"let currentTestData = JSON.parse(pm.environment.get(\"currentTestData\"))\r",
+									"// Get schema\r",
+									"let schema = JSON.parse(pm.environment.get(\"schema\"))\r",
+									"\r",
+									"// 3. Write assertion to check\r",
+									"// Verify http status code và http code name\r",
+									"pm.test(\"TC\"+currentTestData.TestcaseID+\" : Verify http status code is \"+currentTestData.httpStatusCode, function () {\r",
+									"    pm.expect(pm.response.code).to.eq(currentTestData.httpStatusCode);\r",
+									"});\r",
+									"// Verify http code name\r",
+									"pm.test(\"Verify http status code name is \"+ currentTestData.httpStatusCodeName, function () {\r",
+									"    pm.expect(pm.response.reason()).to.eq(currentTestData.httpStatusCodeName)\r",
+									"});\r",
+									"// Verify Response Body, Schema\r",
+									"\r",
+									"// Only when the API returns an HTTP status code of 200, the response parameters 'status' and 'status_desc' will be included in the body. \r",
+									"// In all other cases where the HTTP status code differs, these parameters will not be returned. \r",
+									"// Therefore, 'skipTest' is used to skip the test for other cases where the HTTP status code differs 200.\r",
+									"let skipTest = currentTestData.httpStatusCode;\r",
+									"if (skipTest !== 200) {\r",
+									"    pm.test.skip(\"Test Assertion Verifying Respone Body, Schema is skipped because http status code differs 200\");\r",
+									"} else {\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status = \" + currentTestData.statusResField, function () {\r",
+									"        pm.expect(pm.response.json().status).to.eql(currentTestData.statusResField);\r",
+									"    });\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status Description = \" + currentTestData.status_descResField, function () {\r",
+									"        pm.expect(pm.response.json().status_desc).to.eql(currentTestData.status_descResField);\r",
+									"    });\r",
+									"    pm.test(\"Verify Schema\", function () {\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });     \r",
+									"}\r",
+									" \r",
+									"// 4. Check if there is more test data to process\r",
+									"if (testData.length > 0 ) {\r",
+									"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else {\r",
+									"    // If already, finish test.\r",
+									"    postman.setNextRequest(null);\r",
+									"    // 4. Clear variable in the environment\r",
+									"    // Define an array of common variables to be retained\r",
+									"    let commonVariables = [\"url\"];\r",
+									"    // Convert all environment variables to an object for iteration\r",
+									"    let environmentVariables = pm.environment.toObject();\r",
+									"    // Loop through the environment variables and if that variable doesn't exist in commonVariables, delete it.\r",
+									"    for (let variable in environmentVariables) {\r",
+									"        if (!commonVariables.includes(variable)) {\r",
+									"            pm.environment.unset(variable);\r",
+									"        }\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1. Prepare test data sets\r",
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\") {\r",
+									"    let firstLogin = \"This is not the first login\"\r",
+									"    // Set up test data as an array of objects. We perform API Login with using 7 different test data sets.\r",
+									"    let testData = [\r",
+									"    {\r",
+									"        \"TestcaseID\": 1,\r",
+									"        \"TestcaseName\": \"Verify login failure with a missing EmailAddress parameter.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"a\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 2,\r",
+									"        \"TestcaseName\": \"Verify login failure with a missing Password parameter.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 3,\r",
+									"        \"TestcaseName\": \"Verify login failure with an incorrect EmailAddress parameter's name.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress_1\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 4,\r",
+									"        \"TestcaseName\": \"Verify login failure with an incorrect Password parameter's name.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password_1\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 5,\r",
+									"        \"TestcaseName\": \"Verify login failure with the wrong endpoint.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login_\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 404,\r",
+									"        \"httpStatusCodeName\": \"Not Found\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 6,\r",
+									"        \"TestcaseName\": \"Verify login failure with a different HTTP method (not POST).\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"GET\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 405,\r",
+									"        \"httpStatusCodeName\": \"Method Not Allowed\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 7,\r",
+									"        \"TestcaseName\": \"Verify login failure over an HTTP connection (not secure).\",\r",
+									"        \"url\": \"http://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 403,\r",
+									"        \"httpStatusCodeName\": \"Forbidden\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    }\r",
+									"]\r",
+									"    // Define Schema\r",
+									"    let schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"required\": [\r",
+									"            \"status\",\r",
+									"            \"status_desc\"\r",
+									"        ],\r",
+									"        \"properties\": {\r",
+									"            \"status\": {\r",
+									"                \"type\": \"string\"\r",
+									"            },\r",
+									"            \"token\": {\r",
+									"                \"type\": \"string\"\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", firstLogin);\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"    pm.environment.set(\"schema\", JSON.stringify(schema));\r",
+									"}\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get the first test data set\r",
+									"let currentTestData = testData.shift()\r",
+									"// Initialize environment variables for the current iteration\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData))\r",
+									"pm.environment.set(\"currentTestData\", JSON.stringify(currentTestData))\r",
+									"pm.environment.set(\"currentEmailAddressKey\", currentTestData.EmailAddressKey)\r",
+									"pm.environment.set(\"currentPasswordKey\", currentTestData.PasswordKey)\r",
+									"pm.environment.set(\"currentEmailAddressValue\", currentTestData.EmailAddressValue)\r",
+									"pm.environment.set(\"currentPasswordValue\", currentTestData.PasswordValue)\r",
+									"pm.environment.set(\"CURRENTMETHOD\", currentTestData.METHOD)\r",
+									"pm.environment.set(\"currentUrl\", currentTestData.url)\r",
+									"pm.environment.set(\"currentSubPath\", currentTestData.subPath)\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "{{CURRENTMETHOD}}",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{currentUrl}}{{currentSubPath}}?{{currentEmailAddressKey}}={{currentEmailAddressValue}}&{{currentPasswordKey}}={{currentPasswordValue}}",
+							"host": [
+								"{{currentUrl}}{{currentSubPath}}"
+							],
+							"query": [
+								{
+									"key": "{{currentEmailAddressKey}}",
+									"value": "{{currentEmailAddressValue}}"
+								},
+								{
+									"key": "{{currentPasswordKey}}",
+									"value": "{{currentPasswordValue}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
