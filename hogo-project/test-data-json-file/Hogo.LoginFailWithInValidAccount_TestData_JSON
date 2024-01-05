@@ -1,0 +1,82 @@
+[
+    {
+        "TestcaseID": 1,
+        "TestcaseName": "Verify login failed with invalid EmailAddress, valid Password (encoded MD5)",
+        "EmailAddress": "apitestingwithme_@gmail.com",
+        "Password": "12a1bc88fb7d9b5e1da6604570ec2f36",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "WrongPassword",
+        "status_descResField": "Password did not match"
+    },
+    {
+        "TestcaseID": 2,
+        "TestcaseName": "Verify login failed with valid EmailAddress, invalid password (encoded MD5)",
+        "EmailAddress": "apitestingwithme@gmail.com",
+        "Password": "12a1bc88fb7d9b5e1da6604570ec2f36_",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "WrongPassword",
+        "status_descResField": "Password did not match"
+    },
+    {
+        "TestcaseID": 3,
+        "TestcaseName": "Verify login failed with valid EmailAddress, invalid Password(not encoded MD5)",
+        "EmailAddress": "apitestingwithme@gmail.com",
+        "Password": "apitesting123",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "WrongPassword",
+        "status_descResField": "Password did not match"
+    },
+    {
+        "TestcaseID": 4,
+        "TestcaseName": "Verify login failed with valid EmailAddress, invalid Password (value before changed pass)",
+        "EmailAddress": "apitestingwithme@gmail.com",
+        "Password": "3e9688b79d9562b1624ec475db5d2294",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "WrongPassword",
+        "status_descResField": "Password did not match"
+    },
+    {
+        "TestcaseID": 5,
+        "TestcaseName": "Verify login failed with empty EmailAddress, valid Password",
+        "EmailAddress": "",
+        "Password": "12a1bc88fb7d9b5e1da6604570ec2f36",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "InputParameterError",
+        "status_descResField": "Required input parameters were not found"
+    },
+    {
+        "TestcaseID": 6,
+        "TestcaseName": "Verify login failed with valid EmailAddress, empty Password",
+        "EmailAddress": "apitestingwithme@gmail.com",
+        "Password": "",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "InputParameterError",
+        "status_descResField": "Required input parameters were not found"
+    },
+    {
+        "TestcaseID": 7,
+        "TestcaseName": "Verify login failed with account is not activated",
+        "EmailAddress": "eom1hc@gmail.com",
+        "Password": "3e9688b79d9562b1624ec475db5d2294",
+        "ExpectedResult": "Login failed",
+        "httpStatusCode": 200,
+        "httpStatusCodeName": "OK",
+        "statusResField": "WrongPassword",
+        "status_descResField": "Password did not match"
+    }
+]
+
+
+

@@ -1,0 +1,308 @@
+{
+	"info": {
+		"_postman_id": "da808e05-f83e-45e7-8603-a2e5f1c0de5d",
+		"name": "Hogo_Login_Notion Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/Notion~75161c81-b1a7-4185-8b11-2665a0d5cd32/collection/16137040-da808e05-f83e-45e7-8603-a2e5f1c0de5d?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "HOGO_LoginFail(OtherCase)",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 2. Get data stored in the Environment\r",
+									"// Get test data sets from environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get current test data for this interaction from environment\r",
+									"let currentTestData = JSON.parse(pm.environment.get(\"currentTestData\"))\r",
+									"// Get schema\r",
+									"let schema = JSON.parse(pm.environment.get(\"schema\"))\r",
+									"\r",
+									"// 3. Write assertion to check\r",
+									"// Verify http status code và http code name\r",
+									"pm.test(\"TC\"+currentTestData.TestcaseID+\" : Verify http status code is \"+currentTestData.httpStatusCode, function () {\r",
+									"    pm.expect(pm.response.code).to.eq(currentTestData.httpStatusCode);\r",
+									"});\r",
+									"// Verify http code name\r",
+									"pm.test(\"Verify http status code name is \"+ currentTestData.httpStatusCodeName, function () {\r",
+									"    pm.expect(pm.response.reason()).to.eq(currentTestData.httpStatusCodeName)\r",
+									"});\r",
+									"// Verify Response Body, Schema\r",
+									"\r",
+									"// Only when the API returns an HTTP status code of 200, the response parameters 'status' and 'status_desc' will be included in the body. \r",
+									"// In all other cases where the HTTP status code differs, these parameters will not be returned. \r",
+									"// Therefore, 'skipTest' is used to skip the test for other cases where the HTTP status code differs 200.\r",
+									"let skipTest = currentTestData.httpStatusCode;\r",
+									"if (skipTest !== 200) {\r",
+									"    pm.test.skip(\"Test Assertion Verifying Respone Body, Schema is skipped because http status code differs 200\");\r",
+									"} else {\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status = \" + currentTestData.statusResField, function () {\r",
+									"        pm.expect(pm.response.json().status).to.eql(currentTestData.statusResField);\r",
+									"    });\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status Description = \" + currentTestData.status_descResField, function () {\r",
+									"        pm.expect(pm.response.json().status_desc).to.eql(currentTestData.status_descResField);\r",
+									"    });\r",
+									"    pm.test(\"Verify Schema\", function () {\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });     \r",
+									"}\r",
+									" \r",
+									"// 4. Check if there is more test data to process\r",
+									"if (testData.length > 0 ) {\r",
+									"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else {\r",
+									"    // If already, finish test.\r",
+									"    postman.setNextRequest(null);\r",
+									"    // 4. Clear variable in the environment\r",
+									"    // Define an array of common variables to be retained\r",
+									"    let commonVariables = [\"url\"];\r",
+									"    // Convert all environment variables to an object for iteration\r",
+									"    let environmentVariables = pm.environment.toObject();\r",
+									"    // Loop through the environment variables and if that variable doesn't exist in commonVariables, delete it.\r",
+									"    for (let variable in environmentVariables) {\r",
+									"        if (!commonVariables.includes(variable)) {\r",
+									"            pm.environment.unset(variable);\r",
+									"        }\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1. Prepare test data sets\r",
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\") {\r",
+									"    let firstLogin = \"This is not the first login\"\r",
+									"    // Set up test data as an array of objects. We perform API Login with using 7 different test data sets.\r",
+									"    let testData = [\r",
+									"    {\r",
+									"        \"TestcaseID\": 1,\r",
+									"        \"TestcaseName\": \"Verify login failure with a missing EmailAddress parameter.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"a\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 2,\r",
+									"        \"TestcaseName\": \"Verify login failure with a missing Password parameter.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 3,\r",
+									"        \"TestcaseName\": \"Verify login failure with an incorrect EmailAddress parameter's name.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress_1\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 4,\r",
+									"        \"TestcaseName\": \"Verify login failure with an incorrect Password parameter's name.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password_1\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 5,\r",
+									"        \"TestcaseName\": \"Verify login failure with the wrong endpoint.\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login_\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 404,\r",
+									"        \"httpStatusCodeName\": \"Not Found\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 6,\r",
+									"        \"TestcaseName\": \"Verify login failure with a different HTTP method (not POST).\",\r",
+									"        \"url\": \"https://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"GET\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 405,\r",
+									"        \"httpStatusCodeName\": \"Method Not Allowed\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 7,\r",
+									"        \"TestcaseName\": \"Verify login failure over an HTTP connection (not secure).\",\r",
+									"        \"url\": \"http://www.hogodoc.com\",\r",
+									"        \"subPath\": \"/HoGo/api/v1/Login\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"PasswordKey\": \"Password\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"PasswordValue\": \"12a1bc88fb7d9b5e1da6604570ec2f36\",\r",
+									"        \"httpStatusCode\": 403,\r",
+									"        \"httpStatusCodeName\": \"Forbidden\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    }\r",
+									"]\r",
+									"    // Define Schema\r",
+									"    let schema = {\r",
+									"        \"type\": \"object\",\r",
+									"        \"required\": [\r",
+									"            \"status\",\r",
+									"            \"status_desc\"\r",
+									"        ],\r",
+									"        \"properties\": {\r",
+									"            \"status\": {\r",
+									"                \"type\": \"string\"\r",
+									"            },\r",
+									"            \"token\": {\r",
+									"                \"type\": \"string\"\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", firstLogin);\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"    pm.environment.set(\"schema\", JSON.stringify(schema));\r",
+									"}\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get the first test data set\r",
+									"let currentTestData = testData.shift()\r",
+									"// Initialize environment variables for the current iteration\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData))\r",
+									"pm.environment.set(\"currentTestData\", JSON.stringify(currentTestData))\r",
+									"pm.environment.set(\"currentEmailAddressKey\", currentTestData.EmailAddressKey)\r",
+									"pm.environment.set(\"currentPasswordKey\", currentTestData.PasswordKey)\r",
+									"pm.environment.set(\"currentEmailAddressValue\", currentTestData.EmailAddressValue)\r",
+									"pm.environment.set(\"currentPasswordValue\", currentTestData.PasswordValue)\r",
+									"pm.environment.set(\"CURRENTMETHOD\", currentTestData.METHOD)\r",
+									"pm.environment.set(\"currentUrl\", currentTestData.url)\r",
+									"pm.environment.set(\"currentSubPath\", currentTestData.subPath)\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "{{CURRENTMETHOD}}",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{currentUrl}}{{currentSubPath}}?{{currentEmailAddressKey}}={{currentEmailAddressValue}}&{{currentPasswordKey}}={{currentPasswordValue}}",
+							"host": [
+								"{{currentUrl}}{{currentSubPath}}"
+							],
+							"query": [
+								{
+									"key": "{{currentEmailAddressKey}}",
+									"value": "{{currentEmailAddressValue}}"
+								},
+								{
+									"key": "{{currentPasswordKey}}",
+									"value": "{{currentPasswordValue}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "17862021-7979-4dac-a6b5-6baf3c6c3f7b",
+		"name": "Hogo_Login_Notion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/Notion~75161c81-b1a7-4185-8b11-2665a0d5cd32/collection/16137040-17862021-7979-4dac-a6b5-6baf3c6c3f7b?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "How does the skipTest work",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 2. Get data stored in the Environment\r",
+									"// Get test data sets from environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get current test data for this interaction from environment\r",
+									"let currentTestData = JSON.parse(pm.environment.get(\"currentTestData\"))\r",
+									"\r",
+									"// 3. Write assertion\r",
+									"// 3.1 Verify http status code\r",
+									"// This is assertion for both 2 test cases\r",
+									"pm.test(\"TC\"+currentTestData.TestcaseID+\" : Verify http status code is \"+currentTestData.httpStatusCode, function () {\r",
+									"    pm.expect(pm.response.code).to.eq(currentTestData.httpStatusCode);\r",
+									"});\r",
+									"\r",
+									"// 3.2 Verify Response Body\r",
+									"// Only when the API returns an HTTP status code of 200, the response parameters 'status' and 'status_desc' will be included in the body. \r",
+									"// In all other cases where the HTTP status code differs, these parameters will not be returned. \r",
+									"// Therefore, we use pm.test.skip to skip a specified assertion within a test script.\r",
+									"let skipTest = currentTestData.httpStatusCode;\r",
+									"if (skipTest !== 200) {\r",
+									"    // httpStatusCode !== 200 -> skip Asssertion verifying Response Body\r",
+									"    pm.test.skip(\"Test Assertion verifying Respone Body is skipped because http status code differs 200\");\r",
+									"} else {\r",
+									"    // httpStatusCode == 200 -> run Asssertion verifying Response Body\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status = \" + currentTestData.statusResField, function () {\r",
+									"        pm.expect(pm.response.json().status).to.eql(currentTestData.statusResField);\r",
+									"    });\r",
+									"    pm.test(currentTestData.TestcaseName + \" Respone Status Description = \" + currentTestData.status_descResField, function () {\r",
+									"        pm.expect(pm.response.json().status_desc).to.eql(currentTestData.status_descResField);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// 4. Check if there is more test data to process\r",
+									"if (testData.length > 0 ) {\r",
+									"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+									"    postman.setNextRequest(\"Login\")\r",
+									"} else {\r",
+									"    // If already, finish test.\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1. Prepare test data sets\r",
+									"// Retrieve firstLogin variable from the environment\r",
+									"let firstLogin = pm.environment.get(\"firstLogin\")\r",
+									"// If this is the first time calling the API Login, we will set up test data.\r",
+									"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+									"if (firstLogin !== \"This is not the first login\") {\r",
+									"    let firstLogin = \"This is not the first login\"\r",
+									"    // Set up test data as an array of objects. We perform API Login with using 2 different test data sets.\r",
+									"    let testData = [\r",
+									"    {\r",
+									"        \"TestcaseID\": 1,\r",
+									"        \"TestcaseName\": \"Verify login failure with a missing EmailAddress parameter.\",\r",
+									"        \"METHOD\": \"POST\",\r",
+									"        \"EmailAddressKey\": \"\",\r",
+									"        \"EmailAddressValue\": \"\",\r",
+									"        \"httpStatusCode\": 200,\r",
+									"        \"httpStatusCodeName\": \"OK\",\r",
+									"        \"statusResField\": \"InputParameterError\",\r",
+									"        \"status_descResField\": \"Required input parameters were not found\"\r",
+									"    },\r",
+									"    {\r",
+									"        \"TestcaseID\": 2,\r",
+									"        \"TestcaseName\": \"Verify login failure with a different HTTP method (not POST).\",\r",
+									"        \"METHOD\": \"GET\",\r",
+									"        \"EmailAddressKey\": \"EmailAddress\",\r",
+									"        \"EmailAddressValue\": \"apitestingwithme@gmail.com\",\r",
+									"        \"httpStatusCode\": 405,\r",
+									"        \"httpStatusCodeName\": \"Method Not Allowed\",\r",
+									"        \"statusResField\": \"\",\r",
+									"        \"status_descResField\": \"\"\r",
+									"    },\r",
+									"]\r",
+									"    // Update environment with new Test Data\r",
+									"    pm.environment.set(\"firstLogin\", firstLogin);\r",
+									"    pm.environment.set(\"testData\", JSON.stringify(testData));\r",
+									"}\r",
+									"// Retrieve testData from the environment\r",
+									"let testData = JSON.parse(pm.environment.get(\"testData\"))\r",
+									"// Get the first test data set\r",
+									"let currentTestData = testData.shift()\r",
+									"// Initialize environment variables for the current iteration\r",
+									"pm.environment.set(\"testData\", JSON.stringify(testData))\r",
+									"pm.environment.set(\"currentTestData\", JSON.stringify(currentTestData))\r",
+									"pm.environment.set(\"currentEmailAddressKey\", currentTestData.EmailAddressKey)\r",
+									"pm.environment.set(\"currentEmailAddressValue\", currentTestData.EmailAddressValue)\r",
+									"pm.environment.set(\"CURRENTMETHOD\", currentTestData.METHOD)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "{{CURRENTMETHOD}}",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/Login",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "{{currentEmailAddressKey}}",
+									"value": "{{currentEmailAddressValue}}",
+									"disabled": true
+								},
+								{
+									"key": "PasswordKey",
+									"value": "12a1bc88fb7d9b5e1da6604570ec2f36",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

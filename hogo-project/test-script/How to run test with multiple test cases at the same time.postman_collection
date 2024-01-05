@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "d511f70c-a75e-44b6-bfbd-d248c44f1708",
+		"name": "Hogo_Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/Test_Notion~03cfd9f8-641b-45be-a35d-1d2922c671e7/collection/16137040-d511f70c-a75e-44b6-bfbd-d248c44f1708?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "How to run test with multiple test cases at the same time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 7. Get variables declared in Pre-request Script Tab from the environment\r",
+							"let TestcaseName = pm.environment.get(\"TestcaseName\")\r",
+							"let currentTestcaseID = pm.environment.get(\"currentTestcaseID\")\r",
+							"let currentTestcaseName = pm.environment.get(\"currentTestcaseName\")\r",
+							"let currentResStatus = pm.environment.get(\"currentResStatus\")\r",
+							"let currentResStatusDecs = pm.environment.get(\"currentResStatusDecs\")\r",
+							"\r",
+							"// 8. Get data response returned after running API\r",
+							"let dataResponse = pm.response.json()\r",
+							"let resStatus = dataResponse.status\r",
+							"let resStatusDesc = dataResponse.status_desc\r",
+							"\r",
+							"// 9. Check login fail\r",
+							"pm.test(\"TC\" + currentTestcaseID + \" : \" +currentTestcaseName + \". Status = \" + resStatus + \" . Error Description = \" + resStatusDesc, function () {\r",
+							"    pm.expect(resStatus).to.eql(currentResStatus);\r",
+							"    pm.expect(resStatusDesc).to.eql(currentResStatusDecs);\r",
+							"});\r",
+							"\r",
+							"// 10. Call API multiple times based on the number of tests that we need to execute.\r",
+							"if(TestcaseName.length > 0){\r",
+							"    // If there are remaining test cases, set the next request to \"Login\" for the next iteration\r",
+							"    postman.setNextRequest(\"How to run test with multiple test cases at the same time\")\r",
+							"} else {\r",
+							"    // If all test cases have been executed, set the next request to null to end the script run\r",
+							"    postman.setNextRequest(null)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// 1. Prepare test data with three test cases:\r",
+							"// ・TC1: Verify fail with invalid EmailAddress\r",
+							"// ・TC2: Verify fail with invalid Password(encoded MD5)\r",
+							"// ・TC3: Verify fail with invalid Password(not encode MD5)\r",
+							"\r",
+							"// Base on 'firstExection', check whether this is the first time calling the API Login \r",
+							"// If this is the first time calling the API Login, we will set up test data.\r",
+							"// If this is not the first time calling the API Login, we will use the test data retrieved from the environment.\r",
+							"let firstExection = pm.environment.get(\"firstExection\")\r",
+							"if (!firstExection || firstExection !== \"This is not the first execution\"){\r",
+							"    let firstExection = \"This is not the first execution\"\r",
+							"\r",
+							"    // 2. Sample test data columns. Convert each test data collumn to array.\r",
+							"    let TestCaseID = [\"1\",\"2\",\"3\"]\r",
+							"    let TestcaseName = [\"Verify fail with invalid EmailAddress\", \"Verify fail with invalid Password(encoded MD5)\", \"Verify fail with invalid Password(not encode MD5)\"]\r",
+							"    let EmailAddress = [\"apitestingwithme1@gmail.com\", \"apitestingwithme@gmail.com\", \"apitestingwithme@gmail.com\"]\r",
+							"    let Password = [\"12a1bc88fb7d9b5e1da6604570ec2f36\", \"12a1bc88fb7d9b5e1da6604570ec2f36_\", \"apitesting123\"]\r",
+							"    let ResStatus = [\"WrongPassword\", \"WrongPassword\", \"WrongPassword\"]\r",
+							"    let ResStatusDecs = [\"Password did not match\", \"Password did not match\", \"Password did not match\"]   \r",
+							"\r",
+							"    // 3. Set the declared test data above as variable in the environment.\r",
+							"    pm.environment.set(\"firstExection\",firstExection)\r",
+							"    pm.environment.set(\"TestCaseID\",TestCaseID)\r",
+							"    pm.environment.set(\"TestcaseName\",TestcaseName)\r",
+							"    pm.environment.set(\"EmailAddress\",EmailAddress)\r",
+							"    pm.environment.set(\"Password\",Password)\r",
+							"    pm.environment.set(\"ResStatus\",ResStatus)\r",
+							"    pm.environment.set(\"ResStatusDecs\",ResStatusDecs)\r",
+							"}\r",
+							"\r",
+							"// 4. Retrieve Test Data from the environment to use in this tab\r",
+							"let TestCaseID = pm.environment.get(\"TestCaseID\")\r",
+							"let TestcaseName = pm.environment.get(\"TestcaseName\")\r",
+							"let EmailAddress = pm.environment.get(\"EmailAddress\")\r",
+							"let Password = pm.environment.get(\"Password\")\r",
+							"let ResStatus = pm.environment.get(\"ResStatus\")\r",
+							"let ResStatusDecs = pm.environment.get(\"ResStatusDecs\")\r",
+							"\r",
+							"// 5. Create environment variables for the current iteration\r",
+							"// The shift() method removes the first element from the array and returns new array\r",
+							"// For example, define TestCaseID = [1,2,3]\r",
+							"// After API Login execute the first time, currentTestcaseID = 1 and TestCaseID = [2,3]\r",
+							"// After API Login execute the second time, currentTestcaseID = 2 and TestCaseID = [3]\r",
+							"// After API Login execute the last time, currentTestcaseID = 3 and TestCaseID = []\r",
+							"pm.environment.set(\"currentTestcaseID\",TestCaseID.shift())\r",
+							"pm.environment.set(\"currentTestcaseName\",TestcaseName.shift())\r",
+							"pm.environment.set(\"currentEmailAddress\",EmailAddress.shift())\r",
+							"pm.environment.set(\"currentPassword\",Password.shift())\r",
+							"pm.environment.set(\"currentResStatus\",ResStatus.shift())\r",
+							"pm.environment.set(\"currentResStatusDecs\",ResStatusDecs.shift())\r",
+							"\r",
+							"// 6. After retrieving the first value, update the environment with the remaining arrays for the next request\r",
+							"pm.environment.set(\"TestCaseID\",TestCaseID)\r",
+							"pm.environment.set(\"TestcaseName\",TestcaseName)\r",
+							"pm.environment.set(\"EmailAddress\",EmailAddress)\r",
+							"pm.environment.set(\"Password\",Password)\r",
+							"pm.environment.set(\"ResStatus\",ResStatus)\r",
+							"pm.environment.set(\"ResStatusDecs\",ResStatusDecs)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded____________",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress={{currentEmailAddress}}&Password={{currentPassword}}",
+					"protocol": "https",
+					"host": [
+						"www",
+						"hogodoc",
+						"com"
+					],
+					"path": [
+						"HoGo",
+						"api",
+						"v1",
+						"Login"
+					],
+					"query": [
+						{
+							"key": "EmailAddress",
+							"value": "{{currentEmailAddress}}"
+						},
+						{
+							"key": "Password",
+							"value": "{{currentPassword}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

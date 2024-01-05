@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "17862021-7979-4dac-a6b5-6baf3c6c3f7b",
+		"name": "Hogo_Login_Notion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/Notion~75161c81-b1a7-4185-8b11-2665a0d5cd32/collection/16137040-17862021-7979-4dac-a6b5-6baf3c6c3f7b?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "How to use If-else Statement to control work flow",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let dataResponse = pm.response.json();\r",
+							"// Check if the 'status' in the JSON response is equal to \"OK\".\r",
+							"if (dataResponse.status === \"OK\") {\r",
+							"    // If the status is \"OK\", extract the 'token' and 'status' from the JSON response.\r",
+							"    let token = dataResponse.token;\r",
+							"    let status = dataResponse.status;\r",
+							"    // Set the extracted 'token' value as an environment variable named 'token'.\r",
+							"    pm.environment.set(\"token\", token);\r",
+							"    // Perform a test to verify the success of the login. Display a message with the token and expect the status to be \"OK\".\r",
+							"    pm.test(\"Verify Login success. Status = \" + status + \". Token = \" + token, function () {\r",
+							"        pm.expect(status).to.eql(\"OK\");\r",
+							"    });\r",
+							"} else {\r",
+							"    // If the status is not \"OK\", extract the 'status' and 'status_desc' from the JSON response.\r",
+							"    let status = dataResponse.status;\r",
+							"    let status_desc = dataResponse.status_desc;\r",
+							"    // Perform a test to verify the failure of the login. \r",
+							"    // Display a message with the status and status description, and expect the status and status description to match specific values.\r",
+							"    pm.test(\"Verify Login fail. Status = \" + status + \". Status Description = \" + status_desc, function () {\r",
+							"        pm.expect(status).to.eql(\"WrongPassword\");\r",
+							"        pm.expect(status_desc).to.eql(\"Password did not match\");\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded____________",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+					"protocol": "https",
+					"host": [
+						"www",
+						"hogodoc",
+						"com"
+					],
+					"path": [
+						"HoGo",
+						"api",
+						"v1",
+						"Login"
+					],
+					"query": [
+						{
+							"key": "EmailAddress",
+							"value": "apitestingwithme@gmail.com"
+						},
+						{
+							"key": "Password",
+							"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

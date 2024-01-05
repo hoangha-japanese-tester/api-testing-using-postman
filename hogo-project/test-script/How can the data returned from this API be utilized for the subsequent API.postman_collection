@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "17862021-7979-4dac-a6b5-6baf3c6c3f7b",
+		"name": "Hogo_Login_Notion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/lively-spaceship-121921-Workspa~75161c81-b1a7-4185-8b11-2665a0d5cd32/collection/16137040-17862021-7979-4dac-a6b5-6baf3c6c3f7b?action=share&source=collection_link&creator=16137040"
+	},
+	"item": [
+		{
+			"name": "How can the data returned from this API be utilized for the subsequent API?",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract the 'token' from the JSON response and store it in a variable named 'token'.\r",
+									"let token = pm.response.json().token;\r",
+									"// Set the extracted 'token' value as an environment variable named 'token'.\r",
+									"pm.environment.set(\"token\", token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded____________",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/Login?EmailAddress=apitestingwithme@gmail.com&Password=12a1bc88fb7d9b5e1da6604570ec2f36",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "EmailAddress",
+									"value": "apitestingwithme@gmail.com"
+								},
+								{
+									"key": "Password",
+									"value": "12a1bc88fb7d9b5e1da6604570ec2f36"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get doc",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://www.hogodoc.com/HoGo/api/v1/GetDocumentDetail?SessionID={{token}}&DocumentID=7ae93eae7bea4cb2b6b8ab10569e10e4",
+							"protocol": "https",
+							"host": [
+								"www",
+								"hogodoc",
+								"com"
+							],
+							"path": [
+								"HoGo",
+								"api",
+								"v1",
+								"GetDocumentDetail"
+							],
+							"query": [
+								{
+									"key": "SessionID",
+									"value": "{{token}}"
+								},
+								{
+									"key": "DocumentID",
+									"value": "7ae93eae7bea4cb2b6b8ab10569e10e4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
