@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "68c3efb8-9729-41a4-8b52-4e9ddac07282",
+		"_postman_id": "fd781de5-4338-4c68-84dc-9bc5bd75e54e",
 		"name": "Demo Method",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16137040",
-		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/745d5885-42d4-427f-9740-17ba824966cb/collection/16137040-68c3efb8-9729-41a4-8b52-4e9ddac07282?action=share&source=collection_link&creator=16137040"
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/hogo-api-testing~745d5885-42d4-427f-9740-17ba824966cb/collection/16137040-fd781de5-4338-4c68-84dc-9bc5bd75e54e?action=share&source=collection_link&creator=16137040"
 	},
 	"item": [
 		{
@@ -1539,6 +1539,7 @@
 							"    }\r",
 							"}\r",
 							"\r",
+							"// test edit file on postman and push on github 123\r",
 							""
 						],
 						"type": "text/javascript"
