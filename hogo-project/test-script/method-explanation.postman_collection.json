@@ -1538,8 +1538,6 @@
 							"        pm.environment.unset(variable);\r",
 							"    }\r",
 							"}\r",
-							"\r",
-							"// test edit file on postman and push on github 123\r",
 							""
 						],
 						"type": "text/javascript"
