@@ -1,0 +1,7 @@
+ newman run verify-login-fail-with-invalid-account.json -e pro-env.json  -r htmlextra
+ 
+ newman run verify-login-fail-with-other-cases.json -e pro-env.json  -r htmlextra
+ 
+ newman run verify-login-with-positive-test-cases-and-sessionId-value.json -e pro-env.json  -r htmlextra
+ 
+ newman run verify-post-logout-session-expiry.json -e pro-env.json  -r htmlextra
