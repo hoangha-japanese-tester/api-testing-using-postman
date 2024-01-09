@@ -1,0 +1,10 @@
+{
+	"info": {
+		"_postman_id": "31a95529-4ea9-4f77-9d69-c0cd78465a2a",
+		"name": "API Login_Verify Login Fail(OtherCase)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16137040",
+		"_collection_link": "https://lively-spaceship-121921.postman.co/workspace/hogo-api-testing~745d5885-42d4-427f-9740-17ba824966cb/collection/16137040-31a95529-4ea9-4f77-9d69-c0cd78465a2a?action=share&source=collection_link&creator=16137040"
+	},
+	"item": []
+}

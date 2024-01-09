@@ -1880,7 +1880,8 @@
 							"// Write test script test check login success\r",
 							"pm.test(\"Verify login success with EmailAddress = \" + EmailAddress + \". Password = \" + Password, function () {\r",
 							"    pm.expect(pm.response.json().status).to.include(\"OK\");\r",
-							"});"
+							"});\r",
+							"// test 123"
 						],
 						"type": "text/javascript"
 					}
